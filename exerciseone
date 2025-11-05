@@ -1,0 +1,53 @@
+ #include "mbed.h"
+
+DigitalOut led(D13);
+
+#define DOT_TIME 300     
+#define DASH_TIME 900   
+#define INTRA_CHAR_TIME 300  
+#define INTER_CHAR_TIME 300 
+#define INTER_WORD_TIME 1500
+
+void dot();
+void dash();
+void send_SOS();
+
+int main() {
+    while (1) {
+        send_SOS();
+        thread_sleep_for(INTER_WORD_TIME);
+    }
+}
+
+void dot() {
+    led = 1; 
+    thread_sleep_for(DOT_TIME);
+    led = 0; 
+    thread_sleep_for(INTRA_CHAR_TIME); 
+}
+
+void dash() {
+    led = 1; 
+    thread_sleep_for(DASH_TIME);
+    led = 0;
+    thread_sleep_for(INTRA_CHAR_TIME); 
+}
+
+void send_SOS() {
+
+    for (int i = 0; i < 4; i++) {
+        dot();
+    }
+
+    thread_sleep_for(INTER_CHAR_TIME); 
+
+    for (int i = 0; i < 4; i++) {
+        dash();
+    }
+
+    thread_sleep_for(INTER_CHAR_TIME); 
+
+    for (int i = 0; i < 4; i++) {
+        dot();
+    }
+}
